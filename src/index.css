@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+
+  body,
+  html {
+    @apply bg-neutral-950 text-neutral-200;
+    font-family: "Source Serif 4", serif;
+  }
+}
+
+@layer components {
+
+  .nav {
+    @apply fixed top-5 left-5 h-fit w-48 z-50 p-2 flex flex-col gap-1 border-neutral-900
+  }
+
+  .nav-link {
+    @apply text-neutral-500 hover:text-neutral-200 italic text-lg
+  }
+
+  .page-wrap {
+    @apply fixed top-0 left-0 w-screen h-screen flex justify-center items-center
+  }
+
+  .canvas-wrap {
+    @apply w-full h-full
+  }
+
+}
