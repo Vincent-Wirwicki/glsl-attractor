@@ -3,7 +3,7 @@ import { ShaderMaterial, Vector3 } from "three";
 
 import useInitFBOScene from "../../../hooks/useInitFBOScene";
 import useInitParticles from "../../../hooks/useInitParticles";
-import useOnResize from "../../../hooks/useOnResize";
+// import useOnResize from "../../../hooks/useOnResize";
 
 import PortalMesh from "../../../components/PortalMesh";
 import PointsGeo from "../../../components/PointsGeo";
@@ -32,7 +32,7 @@ const ParticlesFBO = () => {
   const { scene, camera, positions, uvs } = useInitFBOScene();
   const particles = useInitParticles(size);
 
-  useOnResize();
+  // useOnResize();
 
   useParticlesFBO({
     size,

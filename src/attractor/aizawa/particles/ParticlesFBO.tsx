@@ -3,7 +3,7 @@ import { ShaderMaterial, Vector3 } from "three";
 
 import useInitFBOScene from "../../../hooks/useInitFBOScene";
 import useInitParticles from "../../../hooks/useInitParticles";
-import useOnResize from "../../../hooks/useOnResize";
+// import useOnResize from "../../../hooks/useOnResize";
 
 import PortalMesh from "../../../components/PortalMesh";
 import PointsGeo from "../../../components/PointsGeo";
@@ -24,7 +24,10 @@ declare module "@react-three/fiber" {
 
 const ParticlesFBO = () => {
   const size = 512;
-  const color = new Vector3(0.15, 0.25, 0.5);
+  // const color = new Vector3(0.15, 0.25, 0.5);
+  const color = new Vector3(0.95, 0.15, 0.15);
+
+  // const color = new Vector3(0.75, 0.75, 0.75);
 
   const simMatRef = useRef<ShaderMaterial | null>(null);
   const renderMatRef = useRef<ShaderMaterial | null>(null);
@@ -32,7 +35,7 @@ const ParticlesFBO = () => {
   const { scene, camera, positions, uvs } = useInitFBOScene();
   const particles = useInitParticles(size);
 
-  useOnResize();
+  // useOnResize();
 
   useParticlesFBO({
     size,

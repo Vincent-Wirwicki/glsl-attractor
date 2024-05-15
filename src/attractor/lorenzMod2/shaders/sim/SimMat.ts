@@ -194,13 +194,13 @@ export default class SimMatThomas extends ShaderMaterial {
       // pos2 += noseHoverAttractor(vec3(q + transitionProgress), 0.001) ;
 
       vec3 dir2 = normalize(pos);
-      vec3 disp = q +  lorenzMod1attractor( pos2 , 0.05  );
+      vec3 disp = lorenzMod1attractor(1.- pos2 , 0.002  );
       float t2 = length(disp);
       // pos2 *= transitionProgress;
                     // pos += snoiseVec3(pos )*0.004; 
 
-        float force = 0.15*mix(0., 1., smoothstep(0.,2., abs(pos2.y   )));
-      vec3 target = q +  lorenzMod1attractor(pos  ,  0.004   ) ;
+        float force = 0.15*mix(0., 1., smoothstep(0.,2., abs(disp.y   )));
+      vec3 target = q +  lorenzMod1attractor(pos + disp   ,  0.002   ) ;
               // target += curlNoise(target )*0.004; 
 
             // target = abs(transitionProgress  * t2);
@@ -214,23 +214,3 @@ export default class SimMatThomas extends ShaderMaterial {
     });
   }
 }
-// float loopLength = 6.;
-// float transitionStart = 5.;
-// float time = mod(uTime , loopLength );
-// float transitionProgress = map(time, transitionStart, loopLength);
-// vec3 q = pos;
-// vec3 q2 = pos2;
-// // pos2 -= sin(transitionProgress * 2. *PI);
-// pos2 += noseHoverAttractor(vec3(q + transitionProgress), 0.001) ;
-
-// vec3 dir2 = normalize(pos2);
-// vec3 disp = q2 +  noseHoverAttractor( dir2, 0.07  );
-// float t2 = length(disp)*0.1;
-// pos -= transitionProgress  * t2;
-// // pos2 *= transitionProgress;
-
-// vec3 target = q +  noseHoverAttractor(pos  , 0.05    );
-// // target += sin(pos2 *2.)*0.01;
-// float d = length(target - disp)*.3;
-// // target += disp*0.01;
-// // target += d;

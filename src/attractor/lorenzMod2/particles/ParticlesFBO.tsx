@@ -27,7 +27,7 @@ declare module "@react-three/fiber" {
 
 const ParticlesFBO = () => {
   const size = 512;
-  const color = new Vector3(0.0755, 0.855, 0.715);
+  const color = new Vector3(0.95, 0.15, 0.15);
 
   const simMatRef = useRef<ShaderMaterial | null>(null);
   const renderMatRef = useRef<ShaderMaterial | null>(null);

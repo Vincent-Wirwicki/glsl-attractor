@@ -84,3 +84,96 @@
         
     }
 
+     vec3 TSCUS1Attractor(vec3 pos, float t){   
+      const float a = 40.;
+      const float b = 55.;
+      const float c = 1.833;
+      const float d = 0.16;
+      const float e = 0.65;
+      const float f = 20.;
+      
+      vec3 target = vec3(0); 
+      float x = pos.x;
+      float y = pos.y;
+      float z = pos.z;
+
+      target.x = a*(y-x) + d*x*z ;
+      target.y = b*x - x*z + f*y;
+      target.z = c*z + x*y - e*x*x;   
+      
+      return target * t;
+    }
+
+    vec3 lorenzMod1attractor(vec3 pos, float dt){
+        const float a = .1;	
+        const float b = 4.;
+        const float c = 14.;
+        const float d = .08;
+
+        vec3 target = vec3(0);
+        float x = pos.x;
+        float y = pos.y;
+        float z = pos.z;
+
+        target.x = -a *x + y*y - z*z + a*c;
+        target.y = x*(y - b*z) + d;
+        target.z = z + x * (b*y + z);
+        return target *dt ;
+    }
+
+        //   vec3 lorenzAttractor(vec3 pos, float dt){
+    //     const float a = 10.;	
+    //     const float p = 28.;
+    //     const float b = 8./3.;
+    //     const float d = 2.5;
+
+    //     vec3 target = vec3(0);
+    //     float x = pos.x;
+    //     float y = pos.y;
+    //     float z = pos.z;
+
+    //     target.x = a*(y - x);
+    //     target.y = x*(p - z) - y;
+    //     target.z = x*y - b*z;
+
+    //     return target *dt ;
+        
+    // }
+
+    // vec3 fourWing3attractor(vec3 pos, float dt){
+    //     const float a = 10.;	
+    //     const float b = 40.;
+    //     const float c = 2.;
+    //     const float d = 2.5;
+
+    //     vec3 target = vec3(0);
+    //     float x = pos.x;
+    //     float y = pos.y;
+    //     float z = pos.z;
+
+    //     target.x = x + y + y*z;
+    //     target.y = y*z - x*z;
+    //     target.z = -z - x*y + 1. ;
+    //     return target *dt ;
+        
+    // }
+    
+    // vec3 coualiAttractor(vec3 pos, float dt){
+    // inverse of arneado
+    //     const float a = .8;	
+    //     const float b = -1.1;
+    //     const float c = -.45;
+    //     const float d = -1.;
+    //      const float e = 1.;
+
+
+    //     vec3 target = vec3(0);
+    //     float x = pos.x;
+    //     float y = pos.y;
+    //     float z = pos.z;
+
+    //     target.x = y;
+    //     target.y = z;
+    //     target.z = a*x + b*y + c*z + d*x*x*x;
+    //     return target *dt ;
+    // }

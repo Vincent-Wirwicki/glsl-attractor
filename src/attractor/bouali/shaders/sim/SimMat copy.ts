@@ -87,33 +87,76 @@ export default class SimMatThomas extends ShaderMaterial {
         // target.x = y + z ;
         // target.y = -x + a*y;
         // target.z = x*x - z;
-        // -----------------------
-        // const float a = 1.5;	
+        const float a = 1.5;	
 
-        // target.x = y ;
-        // target.y = -x + y*z;
-        // target.z = a - y*y;
-        //----------------------
-           const float a = 10.;	
-        const float p = 28.;
-        const float b = 8./3.;
-        const float d = 2.5;
-
-
-        target.x = a*(y - x);
-        target.y = x*(p - z) - y;
-        target.z = x*y - b*z;
+        target.x = y ;
+        target.y = -x + y*z;
+        target.z = a - y*y;
 
         return target *dt ;
         
     }
 
 
+    //   vec3 lorenzAttractor(vec3 pos, float dt){
+    //     const float a = 10.;	
+    //     const float p = 28.;
+    //     const float b = 8./3.;
+    //     const float d = 2.5;
 
+    //     vec3 target = vec3(0);
+    //     float x = pos.x;
+    //     float y = pos.y;
+    //     float z = pos.z;
+
+    //     target.x = a*(y - x);
+    //     target.y = x*(p - z) - y;
+    //     target.z = x*y - b*z;
+
+    //     return target *dt ;
+        
+    // }
+
+    // vec3 fourWing3attractor(vec3 pos, float dt){
+    //     const float a = 10.;	
+    //     const float b = 40.;
+    //     const float c = 2.;
+    //     const float d = 2.5;
+
+    //     vec3 target = vec3(0);
+    //     float x = pos.x;
+    //     float y = pos.y;
+    //     float z = pos.z;
+
+    //     target.x = x + y + y*z;
+    //     target.y = y*z - x*z;
+    //     target.z = -z - x*y + 1. ;
+    //     return target *dt ;
+        
+    // }
+    
+    // vec3 coualiAttractor(vec3 pos, float dt){
+    // inverse of arneado
+    //     const float a = .8;	
+    //     const float b = -1.1;
+    //     const float c = -.45;
+    //     const float d = -1.;
+    //      const float e = 1.;
+
+
+    //     vec3 target = vec3(0);
+    //     float x = pos.x;
+    //     float y = pos.y;
+    //     float z = pos.z;
+
+    //     target.x = y;
+    //     target.y = z;
+    //     target.z = a*x + b*y + c*z + d*x*x*x;
+    //     return target *dt ;
+    // }
 
 
     float map(float v, float iMin, float iMax ) { return (v-iMin)/(iMax-iMin); }
-vec3 map3IO(in vec3 v, in vec3 iMin, in vec3 iMax, in vec3 oMin, in vec3 oMax) { return oMin + (oMax - oMin) * (v - iMin) / (iMax - iMin); }
 
     void main() {
       vec2 uv = vUv;   
@@ -121,23 +164,32 @@ vec3 map3IO(in vec3 v, in vec3 iMin, in vec3 iMax, in vec3 oMin, in vec3 oMax) {
       vec3 pos2 = texture2D( uPositions2, uv ).xyz;
       
       //gif setup -------------------------------------------------------------------------------
-      float loopLength = 5.;
-      float transitionStart = 10.;
+      float loopLength = 3.;
+      float transitionStart = 6.;
       float time = mod(uTime , loopLength );
       float transitionProgress = map(time, transitionStart, loopLength);
-      float progress = clamp(transitionProgress, .01,.0075);
+      float progress = clamp(transitionProgress, 2.,.5);
       vec3 q = pos;
       vec3 q2 = pos2;
 
-      
-      vec3 d = boualiAttractor(pos  , 0.02  ) ;
 
-      // pos.z -= transitionProgress *2. * PI;
-      vec3 target = q +  boualiAttractor(pos,  progress )  ;
-      // target.x += d.x; 
+      vec3 d = boualiAttractor(pos + transitionProgress, 0.02 * progress);
+      vec3 target = q +  boualiAttractor(pos - d, 0.08 * progress) * transitionProgress;
       vec3 render = mix(d, target, progress);
-      vec3 repeat = mod(target, pos);
 
+// float loopLength = 2.;
+// float transitionStart = 1.5;
+// float time = mod(iGlobalTime, loopLength);
+
+// float v1 = noise(uv + time);
+// float v2 = noise(uv + time - loopLength);
+
+// float transitionProgress = (time-transitionStart)/(loopLength-transitionStart);
+// float progress = clamp(transitionProgress, 0., 1.);
+
+// // An improvement could be to use a curve to interpolate between the two
+// float result = mix(v1, v2, progress);
+      // vec3 render = mix(max(q, min(disp, pos)), target  , transitionProgress );
 
       //--------------------------------------------------------------------------------------------
 

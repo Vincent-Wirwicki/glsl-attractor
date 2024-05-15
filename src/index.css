@@ -20,7 +20,7 @@
   }
 
   .nav-link {
-    @apply text-neutral-500 hover:text-neutral-200 italic text-lg
+    @apply text-neutral-500 hover:text-neutral-200 italic
   }
 
   .page-wrap {

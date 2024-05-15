@@ -43,22 +43,17 @@ export default class SimMatThomas extends ShaderMaterial {
     varying vec2 vUv;
     #define PI 3.141592653589793
 
-    vec3 TSCUS1Attractor(vec3 pos, float t){   
-      const float a = 40.;
-      const float b = 55.;
-      const float c = 1.833;
-      const float d = 0.16;
-      const float e = 0.65;
-      const float f = 20.;
+    vec3 thomasAttractor(vec3 pos, float t){   
+      const float b = 0.19;
       
       vec3 target = vec3(0); 
       float x = pos.x;
       float y = pos.y;
       float z = pos.z;
 
-      target.x = a*(y-x) + d*x*z ;
-      target.y = b*x - x*z + f*y;
-      target.z = c*z + x*y - e*x*x;   
+      target.x = -b*x + sin(y) ;
+      target.y = -b*y + sin(z) ;
+      target.z = -b*z + sin(x) ;   
       
       return target * t;
     }
@@ -71,21 +66,22 @@ export default class SimMatThomas extends ShaderMaterial {
       vec3 pos2 = texture2D( uPositions2, uv ).xyz;
       
       //gif setup -------------------------------------------------------------------------------
-      float loopLength = 0.;
+      float loopLength = 5.;
       float transitionStart = 15.;
       float time = mod(uTime , loopLength );
       float transitionProgress = map(time, transitionStart, loopLength);
+      float progress = clamp(transitionProgress, 0.075,0.05);
       vec3 q = pos;
       vec3 q2 = pos2;
-      // pos /= transitionProgress;
-      // pos2 *= transitionProgress;
+      pos /= transitionProgress;
+      pos2 *= transitionProgress;
 
-      vec3 disp = q +  TSCUS1Attractor(pos2, 0.0007  );
-      vec3 target = pos +  TSCUS1Attractor(pos , 0.001 * transitionProgress  );
+      vec3 disp = q +  thomasAttractor(pos2, 0.075  );
+      vec3 target = q +  thomasAttractor(pos, 0.075  );
       // target += sin(pos2 *2.)*0.01;
       float d = length(target - disp)*.3;
       // target += disp*0.01;
-      // target += d;
+      target += d;
       //--------------------------------------------------------------------------------------------
 
       gl_FragColor = vec4(target, 1.);

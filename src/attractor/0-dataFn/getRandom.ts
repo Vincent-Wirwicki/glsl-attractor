@@ -1,12 +1,16 @@
-export const getRandom = (numPoints: number) => {
+export const getRandom = (numPoints: number, sc: number = 5) => {
   const size = numPoints * numPoints * 4;
   const data = new Float32Array(size);
 
   for (let i = 0; i < size; i++) {
     const stride = i * 4;
-    const x = Math.random() * 2 - 1;
-    const y = Math.random() * 2 - 1;
-    const z = Math.random() * 2 - 1;
+    // const x = Math.random() * 2 - 1;
+    // const y = Math.random() * 2 - 1;
+    // const z = Math.random() * 2 - 1;
+
+    const x = Math.random() * sc - 0.5;
+    const y = Math.random() * sc - 0.5;
+    const z = Math.random() * sc - 0.5;
 
     data[stride] = x;
     data[stride + 1] = y;

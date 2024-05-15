@@ -59,6 +59,7 @@ export default class SimMatThomas extends ShaderMaterial {
     }
 
     float map(float v, float iMin, float iMax ) { return (v-iMin)/(iMax-iMin); }
+float quadraticOut(in float t) { return -t * (t - 2.0); }
 
     void main() {
       vec2 uv = vUv;   
@@ -66,17 +67,18 @@ export default class SimMatThomas extends ShaderMaterial {
       vec3 pos2 = texture2D( uPositions2, uv ).xyz;
       
       //gif setup -------------------------------------------------------------------------------
-      float loopLength = 5.;
-      float transitionStart = 15.;
+      float loopLength = 2.5;
+      float transitionStart = 7.5;
       float time = mod(uTime , loopLength );
       float transitionProgress = map(time, transitionStart, loopLength);
+      float progress = mix(0.075,0.1,transitionProgress);
       vec3 q = pos;
       vec3 q2 = pos2;
-      pos /= transitionProgress;
-      pos2 *= transitionProgress;
+      pos /= transitionProgress  + .25;
+      // pos2 /= transitionProgress;
 
-      vec3 disp = q +  thomasAttractor(pos2, 0.075  );
-      vec3 target = q +  thomasAttractor(pos, 0.075  );
+      vec3 disp = q +  thomasAttractor(pos2, quadraticOut(progress)  );
+      vec3 target = q +  thomasAttractor(pos, quadraticOut(progress));
       // target += sin(pos2 *2.)*0.01;
       float d = length(target - disp)*.3;
       // target += disp*0.01;

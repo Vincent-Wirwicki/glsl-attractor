@@ -10,7 +10,7 @@ type Props = {
 const Formula: FC<Props> = ({ param }) => {
   // const { param:{fix} } = dataApp;
   return (
-    <div className="fixed z-10 bottom-5 left-5 flex flex-col gap-2 font-light italic w-fit ">
+    <div className="fixed z-10 bottom-5 left-5 flex flex-col gap-2 font-light italic w-fit opacity-0 ">
       {/* <h3 className="text-xl not-italic">The Halvorsen attractor</h3>
       <div className="w-full border-b border-dashed "></div> */}
 

@@ -28,17 +28,17 @@ export default class RenderMat extends ShaderMaterial {
 
       vertexShader: /*glsl */ `
         uniform sampler2D uPositions;
+        uniform float uTime;
         varying vec3 vPos;
         varying float vDistance;
         varying vec2 vUv;
         void main() {
           vec3 pos = texture2D( uPositions, position.xy ).xyz;
-      
           vPos = position;
           vUv = uv;
           vec4 mvPosition = modelViewMatrix * vec4(pos.xyz, 1.);
           vDistance = -mvPosition.z;
-          gl_PointSize = 1. * (1./ -mvPosition.z);
+          gl_PointSize = 2. * (1./ -mvPosition.z);
           gl_Position = projectionMatrix * mvPosition;
 
         }`,
@@ -46,14 +46,14 @@ export default class RenderMat extends ShaderMaterial {
   }
 }
 
-            //   vec3 color = vec3(0.15,0.45,0.75);
-          // vec3 color = vec3(0.45,0.25,0.1);
-          // vec3 color = vec3(1.);
+//   vec3 color = vec3(0.15,0.45,0.75);
+// vec3 color = vec3(0.45,0.25,0.1);
+// vec3 color = vec3(1.);
 
-        //   float angle = atan(vPos.x, vPos.y );
-        //   float alpha = cos(angle ) * sin(angle ) * dist;
+//   float angle = atan(vPos.x, vPos.y );
+//   float alpha = cos(angle ) * sin(angle ) * dist;
 
-        //   dist = 1. - clamp(dist, 0.,1.);
-        //   if(dist > 0.85) alpha =0.15;
-          // if(t < 0.25) alpha = 0.;
-          // vec2 a = vUv - 0.5 ;
+//   dist = 1. - clamp(dist, 0.,1.);
+//   if(dist > 0.85) alpha =0.15;
+// if(t < 0.25) alpha = 0.;
+// vec2 a = vUv - 0.5 ;

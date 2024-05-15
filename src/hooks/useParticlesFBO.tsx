@@ -2,6 +2,8 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { MutableRefObject, useEffect } from "react";
 import useInitRenderTarget from "./useInitRenderTarget";
 import { Camera, Scene, ShaderMaterial } from "three";
+// import { lerp } from "three/src/math/MathUtils.js";
+// import { lerp } from "three/src/math/MathUtils.js";
 
 type Args = {
   size: number;
@@ -36,8 +38,9 @@ const useParticlesFBO = ({
   });
 
   useFrame(state => {
-    const { gl, clock, camera:c } = state;
-    console.log(c.position)
+    const { gl, clock } = state;
+    // console.log(c.position);camera: c
+
     if (simMatRef.current) {
       simMatRef.current.uniforms.uTime.value = clock.elapsedTime;
       simMatRef.current.uniforms.uPositions.value = target.texture;
