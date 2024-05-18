@@ -45,7 +45,6 @@ const ParticlesFBO = () => {
   return (
     <>
       <PortalMesh uvs={uvs} positions={positions} scene={scene}>
-        {/* some children */}
         <simMatThomas ref={simMatRef} args={[size]} />
       </PortalMesh>
       <PointsGeo

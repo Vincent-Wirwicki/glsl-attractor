@@ -215,20 +215,26 @@ vec3 map3IO(in vec3 v, in vec3 iMin, in vec3 iMax, in vec3 oMin, in vec3 oMax) {
       vec3 q2 = pos2;
 
       //gif setup -------------------------------------------------------------------------------
-      float loopLength = 3.;
-      float transitionStart = 2.5;
+      float loopLength = 4.;
+      float transitionStart =5.;
       float time = mod(uTime , loopLength );
       float transitionProgress = map(time, transitionStart, loopLength);
       float progress = clamp(transitionProgress,0.0085,0.0065);
+      float freq = mix(10.,6.,transitionProgress);
+      float amp = mix(0.15,0.25,transitionProgress);
+      float ttt = fract(uTime *0.001);
       // float ease = mix(0.0075,0.005,progress);
       // float force = 0.15*mix(0., 1., smoothstep(0.,15., abs(length(pos2.y)))); 
 
-      vec3 target = aizawaAttractor((pos  ), quadraticOut(progress)  ) ;
-      vec3 der = aizawaDAttractor(pos2   , .01);
+      vec3 target = aizawaAttractor((pos  ), quadraticOut(progress )  ) ;
+      vec3 der = aizawaDAttractor(pos2, .01);
       float dist = length(target -  der ) *0.2;
-      dist += snoise(pos + quadraticOut(progress)) *0.5;
 
-      pos += target * dist;
+      dist += snoise(pos *4.) * .25;
+      dist += snoise(pos2 *4.) * .25;
+            // target +=curlNoise(target)*0.01;
+
+      pos += target * dist ;
 
 
 

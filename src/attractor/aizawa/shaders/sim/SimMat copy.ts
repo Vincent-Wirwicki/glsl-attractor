@@ -1,18 +1,19 @@
 import { DataTexture, FloatType, RGBAFormat, ShaderMaterial } from "three";
-import { getRandom, getRandomPI } from "../../../0-dataFn/getRandom";
+import { getRandom } from "../../../0-dataFn/getRandom";
+import { getSphere } from "../../../0-dataFn/getSphere";
 // import { getSphere } from "../../../0-dataFn/getSphere";
 
 export default class SimMatThomas extends ShaderMaterial {
   constructor(size: number) {
     const positionsTexture = new DataTexture(
-      getRandom(size, 4),
+      getSphere(size, 1),
       size,
       size,
       RGBAFormat,
       FloatType
     );
     const positionsTexture2 = new DataTexture(
-      getRandomPI(size),
+      getRandom(size, 2),
       size,
       size,
       RGBAFormat,
@@ -29,54 +30,62 @@ export default class SimMatThomas extends ShaderMaterial {
         uTime: { value: 0 },
       },
       vertexShader: /* glsl */ `
-          varying vec2 vUv;
+        varying vec2 vUv;
 
-            void main() {
-              vUv = uv;
-              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
-            }
-        `,
+          void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
+          }
+      `,
       fragmentShader: /* glsl */ `
-      uniform sampler2D uPositions;
-      uniform sampler2D uPositions2;
-      uniform float uTime;
+    uniform sampler2D uPositions;
+    uniform sampler2D uPositions2;
+    uniform float uTime;
+    varying vec2 vUv;
+    #define PI 3.141592653589793
 
-      varying vec2 vUv;
+    vec3 aizawaAttractor(vec3 pos, float dt){
+        const float a = .95;	
+        const float b = .7;
+        const float c = .6;
+        const float d = 3.5;
+        const float e = .25;
+        const float f = .1;
 
-      #define PI 3.141592653589793
+        vec3 target = vec3(0);
+        float x = pos.x;
+        float y = pos.y;
+        float z = pos.z;
 
-      vec3 sakaryaAttractor(vec3 pos, float dt){
-          const float a = .4;	
-          const float b = .3;
+        target.x = (z - b)*x - d*y;
+        target.y = d*x + (z - b)*y;
+        target.z = c + a*z - (z*z*z / 3.) - (x*x + y*y) * (1. + e*z) + f*z*x*x*x;
 
-          vec3 target = vec3(0);
-          float x = pos.x;
-          float y = pos.y;
-          float z = pos.z;
+        return target *dt ;
+        
+    }
 
-          target.x = -x + y + y*z ;
-          target.y = -x -y + a*x*z;
-          target.z = z - b*x*y;
+    vec3 aizawaDAttractor(vec3 pos, float dt){
+        const float a = .95;	
+        const float b = .7;
+        const float c = .6;
+        const float d = 3.5;
+        const float e = .25;
+        const float f = .1;
 
-          return target *dt ;
-        }
-            vec3 sakaryaAttractorD(vec3 pos, float dt){
-          const float a = .4;	
-          const float b = .3;
+        vec3 target = vec3(0);
+        float x = pos.x;
+        float y = pos.y;
+        float z = pos.z;
 
-          vec3 target = vec3(0);
-          float x = pos.x;
-          float y = pos.y;
-          float z = pos.z;
+        target.x = (pos.z - b);
+    target.y = -d; 
+    target.z = a - pos.z * pos.z - 2.0 * (pos.x * pos.x + pos.y * pos.y) * (1.0 + e * pos.z) + 3.0 * pos.z * pos.z - f * pos.x * pos.x * pos.x; // Derivative of c + a*z - (z*z*z)/3. - (x*x + y*y) * (1. + e*z) + f*z*x*x*x with respect to z
 
-      target.x = -1.0 + z; // Derivative of -x + y + y*z with respect to x
-      target.y = 1.0 + a * z; // Derivative of -x - y + a*x*z with respect to y
-      target.z = y - b * x;
-
-          return target *dt ;
-        }
-      
-      // ---------------------------------------------------------------------------------------------
+        return target  ;
+        
+    }
+  // ---------------------------------------------------------------------------------------------
       //	Simplex 3D Noise 
       //	by Ian McEwan, Ashima Arts
 
@@ -160,8 +169,7 @@ export default class SimMatThomas extends ShaderMaterial {
         return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),
                                       dot(p2,x2), dot(p3,x3) ) );
         }
-
-      vec3 snoiseVec3( vec3 x ){
+ vec3 snoiseVec3( vec3 x ){
         float s  = snoise(vec3( x ));
         float s1 = snoise(vec3( x.y - 19.1 , x.z + 33.4 , x.x + 47.2 ));
         float s2 = snoise(vec3( x.z + 74.2 , x.x - 124.5 , x.y + 99.4 ));
@@ -191,29 +199,55 @@ export default class SimMatThomas extends ShaderMaterial {
         return normalize( vec3( x , y , z ) * divisor );
         
       }
-      // ---------------------------------------------------------------------------------------------
-      void main() {
-        vec2 uv = vUv;   
-        vec3 pos = texture2D( uPositions, uv ).xyz;
-        vec3 pos2 = texture2D( uPositions2, uv ).xyz;
-        
-        float r = length(pos);
-        // float r2 = length(pos2);
-        // vec3 force = mix(pos2, pos, smoothstep(vec3(8.),vec3(2.),pos2  )); 
-              // float force = smoothstep(1.3,.25, abs(pos2.x - r2  )); 
-        float time = mod(uTime , 6. );
+  
+float quadraticOut(in float t) { return -t * (t - 2.0); }
 
-        // vec3 target2 = pos2 +  sakaryaAttractorD(pos2 , 0.008  );
-        // float force = 0.015*mix(.9, 2., smoothstep(4.,1.2, abs(target2.x   ))); 
-        float force = 0.15*mix(2.5, 1.5, smoothstep(5.,2.5, abs(pos2.y -r   ))); 
+    float map(float v, float iMin, float iMax ) { return (v-iMin)/(iMax-iMin); }
+vec3 map3(vec3 v, vec3 iMin, vec3 iMax ) { return (v-iMin)/(iMax-iMin); }
+vec3 map3IO(in vec3 v, in vec3 iMin, in vec3 iMax, in vec3 oMin, in vec3 oMax) { return oMin + (oMax - oMin) * (v - iMin) / (iMax - iMin); }
+
+    void main() {
+      vec2 uv = vUv;   
+      vec3 pos = texture2D( uPositions, uv ).xyz;
+      vec3 pos2 = texture2D( uPositions2, uv ).xyz;
       
-        pos+= curlNoise(pos + time * force )*0.01 ;
+      vec3 q = pos;
+      vec3 q2 = pos2;
 
-        vec3 target = pos +  sakaryaAttractor(pos   , 0.005);
-        //--------------------------------------------------------------------------------------------
+      //gif setup -------------------------------------------------------------------------------
+      float loopLength = 3.;
+      float transitionStart = 2.5;
+      float time = mod(uTime , loopLength );
+      float transitionProgress = map(time, transitionStart, loopLength);
+      float progress = clamp(transitionProgress,0.0085,0.0065);
+      float freq = mix(4.,6.,transitionProgress);
+      float amp = mix(0.15,0.25,transitionProgress);
+      float ttt = fract(uTime * 4.);
+      // float ease = mix(0.0075,0.005,progress);
+      // float force = 0.15*mix(0., 1., smoothstep(0.,15., abs(length(pos2.y)))); 
+      vec3 target = aizawaAttractor((pos  ), quadraticOut(progress )  ) ;
+      vec3 der = aizawaDAttractor(pos2, .01);
+      float dist = length(target -  der ) *0.2;
+      float off = snoise(der);
+      dist += snoise(pos * freq) * amp;
+      float oo = length(off);
 
-        gl_FragColor = vec4(target, 1.);
-        }`,
+      pos += target * dist ;
+
+
+
+      gl_FragColor = vec4(pos, 1.);
+      }`,
     });
   }
 }
+// float test = 0.01;
+// vec3 attract;
+// float steps;
+// float start = 0.;
+
+// start += 0.01;
+
+//   test = map(start, 3.,6.);
+//   steps = step(0., test);
+//   float A = steps * 0.01;

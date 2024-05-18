@@ -5,7 +5,7 @@ import { getRandom, getRandomPI } from "../../../0-dataFn/getRandom";
 export default class SimMatThomas extends ShaderMaterial {
   constructor(size: number) {
     const positionsTexture = new DataTexture(
-      getRandom(size, 3),
+      getRandom(size),
       size,
       size,
       RGBAFormat,
@@ -43,10 +43,8 @@ export default class SimMatThomas extends ShaderMaterial {
     varying vec2 vUv;
     #define PI 3.141592653589793
 
-    vec3 arneodoAttractor(vec3 pos, float dt){
-        const float a = -5.5;	
-        const float b = 3.5;
-        const float c = -1.;
+    vec3 noseHoverAttractor(vec3 pos, float dt){
+        const float a = 1.5;	
 
         vec3 target = vec3(0);
         float x = pos.x;
@@ -54,8 +52,8 @@ export default class SimMatThomas extends ShaderMaterial {
         float z = pos.z;
 
         target.x = y ;
-        target.y = z;
-        target.z = -a*x - b*y -z +c *x*x*x;
+        target.y = -x + y*z;
+        target.z = a - y*y;
 
         return target *dt ;
     }
@@ -68,22 +66,28 @@ export default class SimMatThomas extends ShaderMaterial {
       vec3 pos2 = texture2D( uPositions2, uv ).xyz;
       
       //gif setup -------------------------------------------------------------------------------
-      float loopLength = 5.;
-      float transitionStart = 2.5;
+      float loopLength = 6.;
+      float transitionStart = 3.;
       float time = mod(uTime , loopLength );
       float transitionProgress = map(time, transitionStart, loopLength);
       vec3 q = pos;
       vec3 q2 = pos2;
-      vec3 target2 = arneodoAttractor(pos2 , -.01);
+      // pos2 -= abs(sin(transitionProgress));
+      // pos2 += noseHoverAttractor(vec3(q + transitionProgress), 0.001) ;
 
-      float force = 0.75*mix(0., 1., smoothstep(0.,15., abs(length(q2) - pos2.y))); 
-      // vec3 target = pos +  arneodoAttractor(pos +  disp * force     , 0.0075    );
-      // pos.z -= transitionProgress * force;
+      vec3 dir2 = normalize(pos);
+      vec3 disp = q +  noseHoverAttractor( pos2 , 0.05  );
+      float t2 = length(disp);
+      // pos2 *= transitionProgress;
+        float force = 0.15*mix(0., 1., smoothstep(0.,20., abs(pos2.y   ))); 
 
-      vec3 target = q +  arneodoAttractor(pos + target2 * force , 0.01);
-      
+      vec3 target = pos +  noseHoverAttractor(pos - transitionProgress * force    , 0.08    );
+            // target = abs(transitionProgress  * t2);
 
-      
+
+      // vec3 render = mix(max(q, min(disp, pos)), target  , transitionProgress );
+
+      //--------------------------------------------------------------------------------------------
 
       gl_FragColor = vec4(target, 1.);
       }`,

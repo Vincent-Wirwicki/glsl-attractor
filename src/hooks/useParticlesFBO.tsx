@@ -2,8 +2,6 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { MutableRefObject, useEffect } from "react";
 import useInitRenderTarget from "./useInitRenderTarget";
 import { Camera, Scene, ShaderMaterial } from "three";
-// import { lerp } from "three/src/math/MathUtils.js";
-// import { lerp } from "three/src/math/MathUtils.js";
 
 type Args = {
   size: number;
@@ -38,17 +36,16 @@ const useParticlesFBO = ({
   });
 
   useFrame(state => {
+    if (!simMatRef.current || !renderMatRef.current)
+      return console.error("no sim or render mat");
+
     const { gl, clock } = state;
     // console.log(c.position);camera: c
 
-    if (simMatRef.current) {
-      simMatRef.current.uniforms.uTime.value = clock.elapsedTime;
-      simMatRef.current.uniforms.uPositions.value = target.texture;
-    }
+    simMatRef.current.uniforms.uTime.value = clock.elapsedTime;
+    simMatRef.current.uniforms.uPositions.value = target.texture;
 
-    if (renderMatRef.current) {
-      renderMatRef.current.uniforms.uPositions.value = target1.texture;
-    }
+    renderMatRef.current.uniforms.uPositions.value = target1.texture;
 
     gl.setRenderTarget(target1);
     gl.clear();
