@@ -5,7 +5,7 @@ import { OrbitControls } from "@react-three/drei";
 const SceneDefault = () => {
   return (
     <div className="w-full h-full">
-      <Canvas camera={{ position: [0.2, -1.3, -0.15] }} dpr={2}>
+      <Canvas camera={{ position: [0, 1, 3] }} dpr={2}>
         <ParticlesFBO />
         <OrbitControls />
       </Canvas>

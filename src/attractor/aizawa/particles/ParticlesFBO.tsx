@@ -27,6 +27,8 @@ const ParticlesFBO = () => {
   // const color = new Vector3(0.15, 0.25, 0.5);
   const color = new Vector3(0.95, 0.15, 0.15);
 
+  // const color = new Vector3(1, 0.25, 0.15);
+
   // const color = new Vector3(0.75, 0.75, 0.75);
 
   const simMatRef = useRef<ShaderMaterial | null>(null);

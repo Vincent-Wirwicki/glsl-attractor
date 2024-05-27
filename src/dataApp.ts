@@ -107,11 +107,11 @@ export const dataApp: DataApp = {
     },
   },
   aizawa: {
-    title: "aizawa",
+    title: "Aizawa",
     path: "/aizawa",
     scene: lazy(() => import("./attractor/aizawa/scene/SceneDefault")),
     param: {
-      fix: { a: 0.9, b: 5, c: 9.9, d: 1 },
+      fix: { a: 0.9, b: 0.7, c: 0.6, d: 3.5, e: 0.25, f: 0.1 },
       eq: {
         x: "(z - b)*x - d*y",
         y: "d*x + (z - b)*y",
@@ -120,16 +120,16 @@ export const dataApp: DataApp = {
     },
   },
 };
-  // lorenzMod1: {
-  //   title: "Lorenz mod 1",
-  //   path: "/lorenzMod1",
-  //   scene: lazy(() => import("./attractor/lorenzMod1/scene/SceneDefault")),
-  //   param: {
-  //     fix: { a: 0.1, b: 4, c: 14, d: 0.08 },
-  //     eq: {
-  //       x: "-a *x + y*y - z*z + a*c",
-  //       y: "x*(y - b*z) + d",
-  //       z: "z + x * (b*y + z)",
-  //     },
-  //   },
-  // },
+// lorenzMod1: {
+//   title: "Lorenz mod 1",
+//   path: "/lorenzMod1",
+//   scene: lazy(() => import("./attractor/lorenzMod1/scene/SceneDefault")),
+//   param: {
+//     fix: { a: 0.1, b: 4, c: 14, d: 0.08 },
+//     eq: {
+//       x: "-a *x + y*y - z*z + a*c",
+//       y: "x*(y - b*z) + d",
+//       z: "z + x * (b*y + z)",
+//     },
+//   },
+// },

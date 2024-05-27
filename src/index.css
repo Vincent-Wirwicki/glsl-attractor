@@ -31,4 +31,32 @@
     @apply w-full h-full
   }
 
+  .formula-wrap {
+    @apply fixed z-10 bottom-5 left-5 flex flex-col gap-2 font-light italic w-[350px]
+  }
+
+  .formula-title {
+    @apply tracking-wide text-neutral-200
+  }
+
+  .formula-separator {
+    @apply w-full border-b border-neutral-500
+  }
+
+  .formula-grid {
+    @apply grid grid-cols-2 items-end px-2 pb-2
+  }
+
+  .formula-wrap-text {
+    @apply px-2 flex flex-col gap-2
+  }
+
+  .formula-text {
+    @apply tracking-widest text-lg
+  }
+
+  .formula-btn {
+    @apply text-start underline underline-offset-1 italic
+  }
+
 }

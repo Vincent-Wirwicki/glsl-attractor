@@ -228,13 +228,13 @@ vec3 map3IO(in vec3 v, in vec3 iMin, in vec3 iMax, in vec3 oMin, in vec3 oMax) {
 
       vec3 target = aizawaAttractor((pos  ), quadraticOut(progress )  ) ;
       vec3 der = aizawaDAttractor(pos2, .01);
-      float dist = length(target -  der ) *0.2;
+      float dist = length(target -  der ) *0.25;
 
-      dist += snoise(pos *4.) * .25;
-      dist += snoise(pos2 *4.) * .25;
+      // dist += snoise(pos *4.) * .15;
+      // dist += snoise(pos2 *4.) * .15;
             // target +=curlNoise(target)*0.01;
 
-      pos += target * dist ;
+      pos += target  ;
 
 
 
