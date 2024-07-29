@@ -23,7 +23,7 @@ const useParticlesFBO = ({
 
   const state = useThree();
 
-  //init render scene
+  //init all the texture
   useEffect(() => {
     const { gl } = state;
     gl.setRenderTarget(target);

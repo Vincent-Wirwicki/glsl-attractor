@@ -1,12 +1,13 @@
 import { ShaderMaterial, Vector3 } from "three";
 
 export default class RenderMat extends ShaderMaterial {
-  constructor(color: Vector3) {
+  constructor(color: Vector3 | undefined, size: number) {
     super({
       uniforms: {
         uPositions: { value: null },
         uTime: { value: 0 },
-        uColor: { value: color },
+        uColor: { value: color ? color : new Vector3(0.15, 0.25, 0.5) },
+        uSize: { value: size },
       },
       fragmentShader: /* glsl */ `
 
@@ -29,6 +30,7 @@ export default class RenderMat extends ShaderMaterial {
       vertexShader: /*glsl */ `
         uniform sampler2D uPositions;
         uniform float uTime;
+        uniform float uSize;
         varying vec3 vPos;
         varying float vDistance;
         varying vec2 vUv;
@@ -38,7 +40,7 @@ export default class RenderMat extends ShaderMaterial {
           vUv = uv;
           vec4 mvPosition = modelViewMatrix * vec4(pos.xyz, 1.);
           vDistance = -mvPosition.z;
-          gl_PointSize = 2. * (1./ -mvPosition.z);
+          gl_PointSize = uSize * (1./ -mvPosition.z);
           gl_Position = projectionMatrix * mvPosition;
 
         }`,

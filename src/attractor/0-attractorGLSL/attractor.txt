@@ -158,7 +158,7 @@
         
     // }
     
-    // vec3 coualiAttractor(vec3 pos, float dt){
+    // 
     // inverse of arneado
     //     const float a = .8;	
     //     const float b = -1.1;
@@ -176,4 +176,51 @@
     //     target.y = z;
     //     target.z = a*x + b*y + c*z + d*x*x*x;
     //     return target *dt ;
-    // }
+    // 
+
+    
+        // sprott R
+        // target.x = .9 - y;
+        // target.y = .4+z;
+        // target.z = x*y - z;
+
+
+        // sprott A
+        // target.x = y ;
+        // target.y = -x + y*z;
+        // target.z = 1. - y*y;
+
+        // sprott B
+        // target.x = y *z;
+        // target.y = x-y;
+        // target.z = 1. - x*y;
+
+        // sprott C
+        // target.x = y*z ;
+        // target.y = x - y;
+        // target.z = 1. - x*x;
+
+        // sprott D
+        // const float a = 3.;
+        // target.x = -y ;
+        // target.y = x+z;
+        // target.z = x*z + a*y*y;
+
+        // sprott E
+        // const float a = 4.;
+        // target.x = y*z ;
+        // target.y = x*x - y;
+        // target.z = 1. - a*x;
+
+        // sprott F
+        // const float a = .5;
+        // target.x = y + z ;
+        // target.y = -x + a*y;
+        // target.z = x*x - z;
+        // -----------------------
+        // const float a = 1.5;	
+
+        // target.x = y ;
+        // target.y = -x + y*z;
+        // target.z = a - y*y;
+        //----------------------

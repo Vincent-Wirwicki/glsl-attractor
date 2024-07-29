@@ -1,10 +1,11 @@
 import { FC, MutableRefObject } from "react";
-import { AdditiveBlending, ShaderMaterial, Vector3 } from "three";
-import RenderMat from "../attractor/0-template/shaders/render/RenderMat";
+import { AdditiveBlending, ShaderMaterial } from "three";
+import RenderMat from "../../attractor/0-renderMat/RenderMat";
 import { extend, Object3DNode } from "@react-three/fiber";
+import { useTheme } from "../../provider/ThemeProvider";
 
 extend({
-  RenderMat: RenderMat,
+  RenderMat,
 });
 
 declare module "@react-three/fiber" {
@@ -14,17 +15,19 @@ declare module "@react-three/fiber" {
 }
 
 type Props = {
-  color: Vector3;
+  size?: number;
   renderMatRef: MutableRefObject<ShaderMaterial | null>;
   particles: Float32Array;
 };
 
-const PointsGeo: FC<Props> = ({ color, particles, renderMatRef }) => {
+const PointsGeo: FC<Props> = ({ particles, renderMatRef }) => {
+  const { uColor, uSize } = useTheme();
+
   return (
-    <points>
+    <points frustumCulled={false}>
       <renderMat
         ref={renderMatRef}
-        args={[color]}
+        args={[uColor, uSize]}
         blending={AdditiveBlending}
         depthWrite={false}
         transparent={false}

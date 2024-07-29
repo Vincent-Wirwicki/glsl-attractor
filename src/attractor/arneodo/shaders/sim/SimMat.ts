@@ -41,7 +41,6 @@ export default class SimMatThomas extends ShaderMaterial {
     uniform sampler2D uPositions2;
     uniform float uTime;
     varying vec2 vUv;
-    #define PI 3.141592653589793
 
     vec3 arneodoAttractor(vec3 pos, float dt){
         const float a = -5.5;	
@@ -60,31 +59,16 @@ export default class SimMatThomas extends ShaderMaterial {
         return target *dt ;
     }
 
-    float map(float v, float iMin, float iMax ) { return (v-iMin)/(iMax-iMin); }
+    float quadraticOut(in float t) { return -t * (t - 2.0); }
 
     void main() {
       vec2 uv = vUv;   
       vec3 pos = texture2D( uPositions, uv ).xyz;
-      vec3 pos2 = texture2D( uPositions2, uv ).xyz;
-      
-      //gif setup -------------------------------------------------------------------------------
-      float loopLength = 5.;
-      float transitionStart = 2.5;
-      float time = mod(uTime , loopLength );
-      float transitionProgress = map(time, transitionStart, loopLength);
+      vec3 pos2 = texture2D( uPositions2, uv ).xyz;    
       vec3 q = pos;
-      vec3 q2 = pos2;
-      vec3 target2 = arneodoAttractor(pos2 , -.01);
-
-      float force = 0.75*mix(0., 1., smoothstep(0.,15., abs(length(q2) - pos2.y))); 
-      // vec3 target = pos +  arneodoAttractor(pos +  disp * force     , 0.0075    );
-      // pos.z -= transitionProgress * force;
-
-      vec3 target = q +  arneodoAttractor(pos + target2 * force , 0.01);
+      float force = 0.15*mix(0., 1., smoothstep(0., 25., abs(pos2.y))); 
+      vec3 target = q +  arneodoAttractor(pos,  quadraticOut(force));
       
-
-      
-
       gl_FragColor = vec4(target, 1.);
       }`,
     });

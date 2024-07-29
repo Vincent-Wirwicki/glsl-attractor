@@ -8,9 +8,9 @@ export const getRandom = (numPoints: number, sc: number = 5) => {
     // const y = Math.random() * 2 - 1;
     // const z = Math.random() * 2 - 1;
 
-    const x = Math.random() * sc - 0.5;
-    const y = Math.random() * sc - 0.5;
-    const z = Math.random() * sc - 0.5;
+    const x = Math.random() * sc;
+    const y = Math.random() * sc;
+    const z = Math.random() * sc;
 
     data[stride] = x;
     data[stride + 1] = y;

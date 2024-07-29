@@ -9,13 +9,14 @@ type Props = {
 
 const Formula: FC<Props> = ({ param }) => {
   // const { param:{fix} } = dataApp;
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(true);
   return (
     <div className="formula-wrap">
       <div className="" style={{ opacity: isOpen ? 1 : 0 }}>
-        <h3 className="formula-title">Equations : </h3>
-        <div className="formula-separator"></div>
-        <div className="formula-grid">
+        {/* <h3 className="formula-title">Equations </h3> */}
+        {/* <div className="pb-5">Thomas attractor by Thomas</div> */}
+
+        <div className="formula-wrap-text">
           {param.fix &&
             Object.entries(param.fix).map(([k, v], i) => (
               <span key={i} className="formula-text">
@@ -30,10 +31,10 @@ const Formula: FC<Props> = ({ param }) => {
             </span>
           ))}
         </div>
-        <div className="formula-separator"></div>
       </div>
+
       <button className="formula-btn" onClick={() => setIsOpen(!isOpen)}>
-        <div>{isOpen ? "hide " : "show "}math</div>
+        <div>{isOpen ? "hide " : "show "}equation</div>
       </button>
     </div>
   );

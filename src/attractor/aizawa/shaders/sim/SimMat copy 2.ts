@@ -79,8 +79,9 @@ export default class SimMatThomas extends ShaderMaterial {
         float z = pos.z;
 
         target.x = (pos.z - b);
-    target.y = -d; 
-    target.z = a - pos.z * pos.z - 2.0 * (pos.x * pos.x + pos.y * pos.y) * (1.0 + e * pos.z) + 3.0 * pos.z * pos.z - f * pos.x * pos.x * pos.x; // Derivative of c + a*z - (z*z*z)/3. - (x*x + y*y) * (1. + e*z) + f*z*x*x*x with respect to z
+        target.y = -d; 
+        target.z = a - pos.z * pos.z - 2.0 * (pos.x * pos.x + pos.y * pos.y) * (1.0 + e * pos.z) 
+          + 3.0 * pos.z * pos.z - f * pos.x * pos.x * pos.x; // Derivative of c + a*z - (z*z*z)/3. - (x*x + y*y) * (1. + e*z) + f*z*x*x*x with respect to z
 
         return target  ;
         
@@ -169,13 +170,43 @@ export default class SimMatThomas extends ShaderMaterial {
         return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),
                                       dot(p2,x2), dot(p3,x3) ) );
         }
+      
+        vec3 snoiseVec3( vec3 x ){
+        float s  = snoise(vec3( x ));
+        float s1 = snoise(vec3( x.y - 19.1 , x.z + 33.4 , x.x + 47.2 ));
+        float s2 = snoise(vec3( x.z + 74.2 , x.x - 124.5 , x.y + 99.4 ));
+        vec3 c = vec3( s , s1 , s2 );
+        return c;  
+      }
 
+      vec3 curlNoise( vec3 p ){
+
+        const float e = .1;
+        vec3 dx = vec3( e   , 0.0 , 0.0 );
+        vec3 dy = vec3( 0.0 , e   , 0.0 );
+        vec3 dz = vec3( 0.0 , 0.0 , e   );
+        
+        vec3 p_x0 = snoiseVec3( p - dx );
+        vec3 p_x1 = snoiseVec3( p + dx );
+        vec3 p_y0 = snoiseVec3( p - dy );
+        vec3 p_y1 = snoiseVec3( p + dy );
+        vec3 p_z0 = snoiseVec3( p - dz );
+        vec3 p_z1 = snoiseVec3( p + dz );
+        
+        float x = p_y1.z - p_y0.z - p_z1.y + p_z0.y;
+        float y = p_z1.x - p_z0.x - p_x1.z + p_x0.z;
+        float z = p_x1.y - p_x0.y - p_y1.x + p_y0.x;
+        
+        const float divisor = 1.0 / ( 2.0 * e );
+        return normalize( vec3( x , y , z ) * divisor );
+        
+      }
   
-float quadraticOut(in float t) { return -t * (t - 2.0); }
+    float quadraticOut(in float t) { return -t * (t - 2.0); }
 
     float map(float v, float iMin, float iMax ) { return (v-iMin)/(iMax-iMin); }
-vec3 map3(vec3 v, vec3 iMin, vec3 iMax ) { return (v-iMin)/(iMax-iMin); }
-vec3 map3IO(in vec3 v, in vec3 iMin, in vec3 iMax, in vec3 oMin, in vec3 oMax) { return oMin + (oMax - oMin) * (v - iMin) / (iMax - iMin); }
+    vec3 map3(vec3 v, vec3 iMin, vec3 iMax ) { return (v-iMin)/(iMax-iMin); }
+  vec3 map3IO(in vec3 v, in vec3 iMin, in vec3 iMax, in vec3 oMin, in vec3 oMax) { return oMin + (oMax - oMin) * (v - iMin) / (iMax - iMin); }
 
     void main() {
       vec2 uv = vUv;   
@@ -186,21 +217,28 @@ vec3 map3IO(in vec3 v, in vec3 iMin, in vec3 iMax, in vec3 oMin, in vec3 oMax) {
       vec3 q2 = pos2;
 
       //gif setup -------------------------------------------------------------------------------
-      float loopLength = 3.;
-      float transitionStart = 2.5;
+      float loopLength = 4.;
+      float transitionStart = 5.;
       float time = mod(uTime , loopLength );
       float transitionProgress = map(time, transitionStart, loopLength);
       float progress = clamp(transitionProgress,0.0085,0.0065);
-      float freq = mix(4.,6.,transitionProgress);
+      float freq = mix(10.,6.,transitionProgress);
       float amp = mix(0.15,0.25,transitionProgress);
-     
-      vec3 target = aizawaAttractor(pos, quadraticOut(progress )) ;
-      vec3 der = aizawaDAttractor(pos2, .01);
-      float dist = length(target -  der ) *0.15;
-    
-      dist += snoise(pos * freq) * amp;
-      pos += target * dist ;
-      
+      // float ease = mix(0.0075,0.005,progress);
+      // float force = 0.15*mix(0., 1., smoothstep(0.,15., abs(length(pos2.y)))); 
+
+      vec3 target = aizawaAttractor((pos  ), quadraticOut(progress )  ) ;
+      vec3 der = aizawaDAttractor(pos2, .1);
+      float dist = length(target -  der ) *0.25;
+      float offset = snoise(sin(pos * .15 * 3.14));
+      // pos += offset;
+      // dist += snoise(pos2 *4.) * .15;
+            // target +=curlNoise(target)*0.01;
+
+      pos += target  ;
+
+
+
       gl_FragColor = vec4(pos, 1.);
       }`,
     });

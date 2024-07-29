@@ -15,7 +15,7 @@ export type DataApp = {
 export const dataApp: DataApp = {
   dadras: {
     title: "Dadras",
-    path: "/",
+    path: "/dadras",
     scene: lazy(() => import("./attractor/dadras/scene/DadrasScene")),
     param: {
       fix: { a: 3, b: 2.7, c: 1.7, d: 2, e: 9 },
@@ -81,8 +81,8 @@ export const dataApp: DataApp = {
     },
   },
   bouali: {
-    title: "Bouali",
-    path: "/bouali",
+    title: "lab",
+    path: "/lab",
     scene: lazy(() => import("./attractor/bouali/scene/SceneDefault")),
     param: {
       fix: { a: 0.3, s: 1, c: -1 },
@@ -108,7 +108,7 @@ export const dataApp: DataApp = {
   },
   aizawa: {
     title: "Aizawa",
-    path: "/aizawa",
+    path: "/",
     scene: lazy(() => import("./attractor/aizawa/scene/SceneDefault")),
     param: {
       fix: { a: 0.9, b: 0.7, c: 0.6, d: 3.5, e: 0.25, f: 0.1 },
@@ -119,17 +119,17 @@ export const dataApp: DataApp = {
       },
     },
   },
+  lorenz: {
+    title: "Lorenz",
+    path: "/lorenz",
+    scene: lazy(() => import("./attractor/lorenz/scene/SceneDefault")),
+    param: {
+      fix: { a: 10, p: 28, b: 2.66, d: 2.5 },
+      eq: {
+        x: "a*(y - x);",
+        y: "x*(p - z) - y",
+        z: "x*y - b*z",
+      },
+    },
+  },
 };
-// lorenzMod1: {
-//   title: "Lorenz mod 1",
-//   path: "/lorenzMod1",
-//   scene: lazy(() => import("./attractor/lorenzMod1/scene/SceneDefault")),
-//   param: {
-//     fix: { a: 0.1, b: 4, c: 14, d: 0.08 },
-//     eq: {
-//       x: "-a *x + y*y - z*z + a*c",
-//       y: "x*(y - b*z) + d",
-//       z: "z + x * (b*y + z)",
-//     },
-//   },
-// },

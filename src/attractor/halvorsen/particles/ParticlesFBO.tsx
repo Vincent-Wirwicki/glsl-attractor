@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { ShaderMaterial, Vector3 } from "three";
+import { ShaderMaterial } from "three";
 import { extend, Object3DNode } from "@react-three/fiber";
 
 import useInitFBOScene from "../../../hooks/useInitFBOScene";
@@ -7,8 +7,8 @@ import useInitParticles from "../../../hooks/useInitParticles";
 import useOnResize from "../../../hooks/useOnResize";
 import useParticlesFBO from "../../../hooks/useParticlesFBO";
 
-import PortalMesh from "../../../components/PortalMesh";
-import PointsGeo from "../../../components/PointsGeo";
+import PortalMesh from "../../../components/three/PortalMesh";
+import PointsGeo from "../../../components/three/PointsGeo";
 
 import SimMatHalvorsen from "../shaders/sim/SimMat";
 
@@ -24,7 +24,6 @@ declare module "@react-three/fiber" {
 
 const ParticlesFBO = () => {
   const size = 512;
-  const color = new Vector3(0.15, 0.03, 0.015);
 
   const simMatRef = useRef<ShaderMaterial | null>(null);
   const renderMatRef = useRef<ShaderMaterial | null>(null);
@@ -48,11 +47,7 @@ const ParticlesFBO = () => {
         {/* some children */}
         <simMatHalvorsen ref={simMatRef} args={[size]} />
       </PortalMesh>
-      <PointsGeo
-        color={color}
-        renderMatRef={renderMatRef}
-        particles={particles}
-      />
+      <PointsGeo renderMatRef={renderMatRef} particles={particles} />
     </>
   );
 };

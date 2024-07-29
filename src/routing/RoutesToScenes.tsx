@@ -11,7 +11,7 @@ const RoutesToScenes: FC<Props> = ({ dataApp }) =>
   Object.keys(dataApp).map((k, i) => {
     const Scene = dataApp[k].scene;
     return (
-      <Route key={i + "jziajd"} path={dataApp[k].path}>
+      <Route key={`${dataApp[k].title} + ${i}`} path={dataApp[k].path}>
         <Suspense fallback={<div>Loading</div>}>
           <Formula param={dataApp[k].param} />
           <Scene />
