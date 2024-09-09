@@ -77,13 +77,13 @@ export default class SimMatThomas extends ShaderMaterial {
       // pos2 -= abs(sin(transitionProgress));
       // pos2 += noseHoverAttractor(vec3(q + transitionProgress), 0.001) ;
 
-      vec3 dir2 = normalize(pos);
+      // vec3 dir2 = normalize(pos);
       vec3 disp = lorenzMod2attractor(1.- pos2 , 0.002  );
-      float t2 = length(disp);
+      // float t2 = length(disp);
       // pos2 *= transitionProgress;
                     // pos += snoiseVec3(pos )*0.004; 
 
-        float force = 0.15*mix(0., 1., smoothstep(0.,2., abs(disp.y   )));
+      float force = 0.15*mix(0., 1., smoothstep(0.,2., abs(disp.y   )));
       vec3 target = q +  lorenzMod2attractor(pos + disp   ,  0.002   ) ;
               // target += curlNoise(target )*0.004; 
 

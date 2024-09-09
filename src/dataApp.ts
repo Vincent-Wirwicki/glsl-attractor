@@ -83,7 +83,7 @@ export const dataApp: DataApp = {
   bouali: {
     title: "lab",
     path: "/lab",
-    scene: lazy(() => import("./attractor/bouali/scene/SceneDefault")),
+    scene: lazy(() => import("./attractor/1-lab/scene/SceneDefault")),
     param: {
       fix: { a: 0.3, s: 1, c: -1 },
       eq: {

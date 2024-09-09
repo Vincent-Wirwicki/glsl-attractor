@@ -74,23 +74,4 @@ export default class SimMatThomas extends ShaderMaterial {
     });
   }
 }
-// float loopLength = 6.;
-// float transitionStart = 5.;
-// float time = mod(uTime , loopLength );
-// float transitionProgress = map(time, transitionStart, loopLength);
-// vec3 q = pos;
-// vec3 q2 = pos2;
-// // pos2 -= sin(transitionProgress * 2. *PI);
-// pos2 += noseHoverAttractor(vec3(q + transitionProgress), 0.001) ;
 
-// vec3 dir2 = normalize(pos2);
-// vec3 disp = q2 +  noseHoverAttractor( dir2, 0.07  );
-// float t2 = length(disp)*0.1;
-// pos -= transitionProgress  * t2;
-// // pos2 *= transitionProgress;
-
-// vec3 target = q +  noseHoverAttractor(pos  , 0.05    );
-// // target += sin(pos2 *2.)*0.01;
-// float d = length(target - disp)*.3;
-// // target += disp*0.01;
-// // target += d;

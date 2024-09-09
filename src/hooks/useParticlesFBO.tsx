@@ -39,8 +39,8 @@ const useParticlesFBO = ({
     if (!simMatRef.current || !renderMatRef.current)
       return console.error("no sim or render mat");
 
-    const { gl, clock } = state;
-    // console.log(c.position);camera: c
+    const { gl, clock, camera: c } = state;
+    console.log(c.position);
 
     simMatRef.current.uniforms.uTime.value = clock.elapsedTime;
     simMatRef.current.uniforms.uPositions.value = target.texture;

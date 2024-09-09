@@ -83,20 +83,7 @@ export default class SimMatDadras extends ShaderMaterial {
       vec3 pos = texture2D( uPositions, uv ).xyz;
       vec3 pos2 = texture2D( uPositions2, uv ).xyz;
       float r = length(pos2);
-      
-      //gif setup -------------------------------------------------------------------------------
-      // float loopLength = 15.;
-      // float transitionStart =5.;
-      // float time = mod(uTime, loopLength);
-
-      // float transitionProgress = (time-transitionStart)/(loopLength-transitionStart);
-      // float progress = clamp(transitionProgress, 0., 1.);
-      // float offset = sin(transitionProgress * PI *2.) * cos(transitionProgress * PI *2.);
-      
-      // vec3 target = dadrasAttractor(pos + offset + vec3(1.5)  ,0.005  )  ;
-      // vec3 target2 = dadrasAttractorD1(pos2 + offset + vec3(1.5));
-      //--------------------------------------------------------------------------------------------
-      
+            
       vec3 target = dadrasAttractor(pos, 0.005  ) ;
       // derivate value
       vec3 target2 = dadrasAttractorD1(pos2);

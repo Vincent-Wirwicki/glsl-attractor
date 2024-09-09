@@ -12,7 +12,7 @@ import ConfigTheme from "./components/theme/ConfigTheme";
 const App = () => {
   return (
     <>
-      <ThemeProvider uColor={new Vector3(0.15, 0.25, 0.5)}>
+      <ThemeProvider uColor={new Vector3(0.1, 0.1, 0.1)} uSize={2}>
         <ConfigTheme />
         <MainNav dataApp={dataApp} />
         <main className="page-wrap">
@@ -27,4 +27,4 @@ const App = () => {
 };
 
 export default App;
-// http://www.3d-meier.de/tut19/Seite0.html
+// http://www.3d-meier.de/tut19/Seite0.html new Vector3(0.15, 0.25, 0.5)

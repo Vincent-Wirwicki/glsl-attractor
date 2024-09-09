@@ -89,7 +89,7 @@ export default class SimMatThomas extends ShaderMaterial {
       //	Simplex 3D Noise 
       //	by Ian McEwan, Ashima Arts
 
-    vec4 taylorInvSqrt(in vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+      vec4 taylorInvSqrt(in vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
       vec3 mod289(const in vec3 x) { return x - floor(x * (1. / 289.)) * 289.; }
       vec4 mod289(const in vec4 x) { return x - floor(x * (1. / 289.)) * 289.; }
 

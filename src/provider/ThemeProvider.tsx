@@ -21,7 +21,7 @@ type ThemeProviderProps = {
 type Theme = "light" | "dark";
 
 type ThemeProviderState = {
-  uColor: Vector3 | undefined;
+  uColor: Vector3 | undefined | null;
   setuColor: (color: Vector3) => void;
   uSize: number;
   setuSize: (val: number) => void;
@@ -31,7 +31,7 @@ type ThemeProviderState = {
 
 const initialState: ThemeProviderState = {
   // theme: "system",
-  uColor: new Vector3(0.15, 0.25, 0.5),
+  uColor: null,
   setuColor: () => null,
   uSize: 4,
 
@@ -43,9 +43,9 @@ const initialState: ThemeProviderState = {
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
-  const [uColor, setuColor] = useState<Vector3>();
-  const [uSize, setuSize] = useState<number>(4);
-  const [theme, setTheme] = useState<"dark" | "light">("light");
+  const [uColor, setuColor] = useState<Vector3>(new Vector3(0.2, 0.2, 0.2));
+  const [uSize, setuSize] = useState<number>(6);
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove("light", "dark");
