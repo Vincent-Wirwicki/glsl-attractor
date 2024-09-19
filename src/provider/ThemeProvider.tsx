@@ -21,7 +21,7 @@ type ThemeProviderProps = {
 type Theme = "light" | "dark";
 
 type ThemeProviderState = {
-  uColor: Vector3 | undefined | null;
+  uColor: Vector3 | undefined;
   setuColor: (color: Vector3) => void;
   uSize: number;
   setuSize: (val: number) => void;
@@ -31,7 +31,7 @@ type ThemeProviderState = {
 
 const initialState: ThemeProviderState = {
   // theme: "system",
-  uColor: null,
+  uColor: undefined,
   setuColor: () => null,
   uSize: 4,
 
@@ -67,6 +67,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => {
   const context = useContext(ThemeProviderContext);
 

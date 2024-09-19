@@ -6,6 +6,9 @@ import { OrbitControls } from "@react-three/drei";
 const SceneDefault = () => {
   return (
     <div className="w-full h-full">
+      <div className="absolute z-50 top-1/2 left-1/2 w-40 h-40 translate-x-[-50%] translate-y-[-50%] rotate-45  mix-blend-difference bg-neutral-200 rounded-full "></div>
+      <div className="absolute z-50 top-1/2 left-1/2 w-52 h-52 translate-x-[-50%] translate-y-[-50%] rotate-45  mix-blend-difference bg-neutral-200 "></div>
+      <div className="absolute z-50 top-1/2 left-1/2 w-72 h-72 translate-x-[-50%] translate-y-[-50%] rotate-45  mix-blend-difference bg-neutral-200 "></div>
       <Canvas camera={{ position: [7.2, 7.2, 8] }} dpr={2}>
         <ParticlesFBO />
         {/* <ParticlesFBOTwo /> */}

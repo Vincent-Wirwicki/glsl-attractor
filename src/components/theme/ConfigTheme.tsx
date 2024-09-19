@@ -9,7 +9,7 @@ const ConfigTheme = () => {
     orange: new Vector3(0.15, 0.05, 0.025),
     blue: new Vector3(0.15, 0.25, 0.5),
     black: new Vector3(0.8, 0.8, 0.8),
-    white: new Vector3(0.1, 0.1, 0.1),
+    white: new Vector3(0.3, 0.3, 0.3),
   };
   return (
     <div className="fixed z-50 top-5 right-5 flex flex-col gap-4 h-fit p-2">

@@ -126,7 +126,7 @@ float cubicIn(float t) {
       vec3 pos2 = texture2D( uPositions2, uv ).xyz;
       
       //gif setup -------------------------------------------------------------------------------
-      float loopLength = 5.;
+      float loopLength = 12.;
       float transitionStart = loopLength * .25;
       float time = mod(uTime, loopLength );
 
@@ -136,8 +136,8 @@ float cubicIn(float t) {
       
       float progress = mix( .025,.05, transitionProgress);
       float progress2 = mix( .0005,.00075,transitionProgress);
-      float progress3 = mix( 0.,1.,transitionProgress);
-      float disp = gnoise3(pos + sin(uTime) );
+      float progress3 = mix( 0.,.45,transitionProgress);
+      float disp = gnoise3(vec3(0.5) );
 
       vec3 q = pos ;
       vec3 q2 = pos2;
@@ -147,7 +147,7 @@ float cubicIn(float t) {
       vec3 target2 = q +  HalvorsenAttractor(pos2, progress2 );
 
       target -= disp *0.1 ;
-      vec3 render = mix(target, target2, cubicInOut(progress3));
+      vec3 render = mix(target, target2, cubicOut(progress3));
 
 
       //--------------------------------------------------------------------------------------------

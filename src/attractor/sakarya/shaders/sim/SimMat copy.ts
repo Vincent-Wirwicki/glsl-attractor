@@ -205,7 +205,7 @@ export default class SimMatThomas extends ShaderMaterial {
 
         // vec3 target2 = pos2 +  sakaryaAttractorD(pos2 , 0.008  );
         // float force = 0.015*mix(.9, 2., smoothstep(4.,1.2, abs(target2.x   ))); 
-        float force = 0.15*mix(2.5, 1.5, smoothstep(5.,2.5, abs(pos2.y - r   ))); 
+        float force = 0.15*mix(2.5, 1.5, smoothstep(5.,2.5, abs(pos2.y -r   ))); 
       
         pos+= curlNoise(pos + time * force )*0.01 ;
 
